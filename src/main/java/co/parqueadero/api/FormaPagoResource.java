@@ -2,7 +2,6 @@ package co.parqueadero.api;
 
 import co.parqueadero.bd.Conexion;
 import co.parqueadero.modelos.FormaPago;
-import co.parqueadero.modelos.Rol;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;

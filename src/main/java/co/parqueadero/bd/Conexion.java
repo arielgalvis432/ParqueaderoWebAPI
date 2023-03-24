@@ -409,6 +409,8 @@ public class Conexion {
                 parqueo.setVehiculoId(rst.getInt("vehiculo_id"));
                 parqueo.setFacturaId(rst.getInt("factura_id"));
                 parqueo.setCubiculoId(rst.getInt("cubiculo_id"));
+                parqueo.setReserva(rst.getInt("reserva"));
+                parqueo.setEstadoReserva(rst.getInt("estado_reserva"));
                 
                 lista.add(parqueo);
             }
@@ -443,6 +445,8 @@ public class Conexion {
                 parqueo.setVehiculoId(rst.getInt("vehiculo_id"));
                 parqueo.setFacturaId(rst.getInt("factura_id"));
                 parqueo.setCubiculoId(rst.getInt("cubiculo_id"));
+                parqueo.setReserva(rst.getInt("reserva"));
+                parqueo.setEstadoReserva(rst.getInt("estado_reserva"));
                 
                 return parqueo;
             }
@@ -458,7 +462,9 @@ public class Conexion {
      * @param ID del vehiculo.
      * @return parqueo.
      */
-    public Parqueo obtenerParqueoPorVehiculoId(int id) {
+    public List<Parqueo> obtenerParqueosPorVehiculoId(int id) {
+        List<Parqueo> lista = new ArrayList<>();
+
         try {
             final String SQL = "SELECT * FROM parqueo WHERE vehiculo_id = ?";
             PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
@@ -466,7 +472,7 @@ public class Conexion {
 
             ResultSet rst = pstmt.executeQuery();
 
-            if (rst.next()) {
+            while (rst.next()) {
                 Parqueo parqueo = new Parqueo();
                 
                 parqueo.setId(rst.getInt("id"));
@@ -477,14 +483,54 @@ public class Conexion {
                 parqueo.setVehiculoId(rst.getInt("vehiculo_id"));
                 parqueo.setFacturaId(rst.getInt("factura_id"));
                 parqueo.setCubiculoId(rst.getInt("cubiculo_id"));
+                parqueo.setReserva(rst.getInt("reserva"));
+                parqueo.setEstadoReserva(rst.getInt("estado_reserva"));
                 
-                return parqueo;
+                lista.add(parqueo);
             }
         } catch (SQLException e) {
             e.printStackTrace(System.out);
         }
 
-        return null;
+        return lista;
+    }
+
+    /**
+     * Recuperar el parqueo por vehiculo id.
+     * @param ID del vehiculo.
+     * @return parqueo.
+     */
+    public List<Parqueo> obtenerParqueosPorVehiculoPlaca(String placa) {
+        List<Parqueo> lista = new ArrayList<>();
+
+        try {
+            final String SQL = "SELECT * FROM parqueo WHERE placa = ?";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            pstmt.setString(1, placa);
+
+            ResultSet rst = pstmt.executeQuery();
+
+            while (rst.next()) {
+                Parqueo parqueo = new Parqueo();
+                
+                parqueo.setId(rst.getInt("id"));
+                parqueo.setFechaInicio(rst.getString("fecha_inicio"));
+                parqueo.setFechaFinal(rst.getString("fecha_final"));
+                parqueo.setHoraInicio(rst.getString("hora_inicio"));
+                parqueo.setHoraFinal(rst.getString("hora_final"));
+                parqueo.setVehiculoId(rst.getInt("vehiculo_id"));
+                parqueo.setFacturaId(rst.getInt("factura_id"));
+                parqueo.setCubiculoId(rst.getInt("cubiculo_id"));
+                parqueo.setReserva(rst.getInt("reserva"));
+                parqueo.setEstadoReserva(rst.getInt("estado_reserva"));
+                
+                lista.add(parqueo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return lista;
     }
 
     /**
@@ -513,6 +559,8 @@ public class Conexion {
                 parqueo.setVehiculoId(rst.getInt("vehiculo_id"));
                 parqueo.setFacturaId(rst.getInt("factura_id"));
                 parqueo.setCubiculoId(rst.getInt("cubiculo_id"));
+                parqueo.setReserva(rst.getInt("reserva"));
+                parqueo.setEstadoReserva(rst.getInt("estado_reserva"));
                 
                 lista.add(parqueo);
             }

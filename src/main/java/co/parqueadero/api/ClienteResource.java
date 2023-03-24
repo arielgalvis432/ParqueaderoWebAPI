@@ -4,7 +4,6 @@ import co.parqueadero.bd.Conexion;
 import co.parqueadero.modelos.Cliente;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;

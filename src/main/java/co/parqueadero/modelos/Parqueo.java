@@ -10,6 +10,8 @@ public class Parqueo {
     private String fechaFinal;
     private String horaInicio;
     private String horaFinal;
+    private int reserva;
+    private int estadoReserva;
     private int vehiculoId;
     private int facturaId;
     private int cubiculoId;
@@ -17,16 +19,31 @@ public class Parqueo {
     public Parqueo() {
     }
 
-    public Parqueo(String fechaInicio, String fechaFinal, String horaInicio, String horaFinal, int vehiculoId, int facturaId, int cubiculoId) {
+    public Parqueo(String fechaInicio, String fechaFinal, String horaInicio, String horaFinal, int reserva, int estadoReserva, int vehiculoId, int facturaId, int cubiculoId) {
         this.fechaInicio = fechaInicio;
         this.fechaFinal = fechaFinal;
         this.horaInicio = horaInicio;
         this.horaFinal = horaFinal;
+        this.reserva = reserva;
+        this.estadoReserva = estadoReserva;
         this.vehiculoId = vehiculoId;
         this.facturaId = facturaId;
         this.cubiculoId = cubiculoId;
     }
 
+    public Parqueo(int id, String fechaInicio, String fechaFinal, String horaInicio, String horaFinal, int reserva, int estadoReserva, int vehiculoId, int facturaId, int cubiculoId) {
+        this.id = id;
+        this.fechaInicio = fechaInicio;
+        this.fechaFinal = fechaFinal;
+        this.horaInicio = horaInicio;
+        this.horaFinal = horaFinal;
+        this.reserva = reserva;
+        this.estadoReserva = estadoReserva;
+        this.vehiculoId = vehiculoId;
+        this.facturaId = facturaId;
+        this.cubiculoId = cubiculoId;
+    }
+    
     public int getId() {
         return id;
     }
@@ -65,6 +82,22 @@ public class Parqueo {
 
     public void setHoraFinal(String horaFinal) {
         this.horaFinal = horaFinal;
+    }
+
+    public int getReserva() {
+        return reserva;
+    }
+
+    public void setReserva(int reserva) {
+        this.reserva = reserva;
+    }
+
+    public int getEstadoReserva() {
+        return estadoReserva;
+    }
+
+    public void setEstadoReserva(int estadoReserva) {
+        this.estadoReserva = estadoReserva;
     }
 
     public int getVehiculoId() {

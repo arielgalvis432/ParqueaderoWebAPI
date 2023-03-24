@@ -65,7 +65,24 @@ public class ParqueoResource {
     @Path("buscar-por-vehiculo-id")
     @Produces(MediaType.APPLICATION_JSON)
     public String buscarPorVehiculoId(@QueryParam("id") String id) {
-        Parqueo parqueo = new Conexion().obtenerParqueoPorVehiculoId(Integer.parseInt(id));
+        List<Parqueo> parqueo = new Conexion().obtenerParqueosPorVehiculoId(Integer.parseInt(id));
+        
+        ObjectMapper objectMapper = new ObjectMapper();
+        
+        try {
+            return objectMapper.writeValueAsString(parqueo);
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(VehiculoTipoResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return "";
+    }
+
+    @GET
+    @Path("buscar-por-placa")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String buscarPorVehiculoPlaca(@QueryParam("placa") String placa) {
+        List<Parqueo> parqueo = new Conexion().obtenerParqueosPorVehiculoPlaca(placa);
         
         ObjectMapper objectMapper = new ObjectMapper();
         
