@@ -6,6 +6,7 @@ package co.parqueadero.bd;
 
 import co.parqueadero.modelos.Cliente;
 import co.parqueadero.modelos.Cubiculo;
+import co.parqueadero.modelos.Factura;
 import co.parqueadero.modelos.FormaPago;
 import co.parqueadero.modelos.Parqueo;
 import co.parqueadero.modelos.Rol;
@@ -38,8 +39,10 @@ public class Conexion {
     // Puerto
     public String port = "3306";
 
-    // Ruta de nuestra base de datos (desactivamos el uso de SSL con "?useSSL=false")
-    public String url = "jdbc:mysql://" + hostname + ":" + port + "/" + database + "?allowPublicKeyRetrieval=true&useSSL=false";
+    // Ruta de nuestra base de datos (desactivamos el uso de SSL con
+    // "?useSSL=false")
+    public String url = "jdbc:mysql://" + hostname + ":" + port + "/" + database
+            + "?allowPublicKeyRetrieval=true&useSSL=false";
 
     // Nombre de usuario
     public String username = "root";
@@ -284,7 +287,7 @@ public class Conexion {
 
         return null;
     }
-    
+
     public Vehiculo obtenerVehiculoPorPlaca(String placa) {
         try {
             final String SQL = "SELECT * FROM vehiculo WHERE placa = ?";
@@ -310,7 +313,7 @@ public class Conexion {
 
         return null;
     }
-    
+
     public Vehiculo crearVehiculo(Vehiculo vehiculo) {
         try {
             final String SQL = "INSERT INTO vehiculo VALUES (DEFAULT, ?, ?, ?, ?, ?)";
@@ -336,7 +339,7 @@ public class Conexion {
 
         return null;
     }
-    
+
     public List<Cubiculo> obtenerCubiculos() {
         List<Cubiculo> lista = new ArrayList<>();
 
@@ -348,11 +351,11 @@ public class Conexion {
 
             while (rst.next()) {
                 Cubiculo cubiculo = new Cubiculo();
-                
+
                 cubiculo.setId(rst.getInt("id"));
                 cubiculo.setNombre(rst.getString("nombre"));
                 cubiculo.setDisponible(rst.getInt("disponible"));
-                
+
                 lista.add(cubiculo);
             }
         } catch (SQLException e) {
@@ -361,7 +364,7 @@ public class Conexion {
 
         return lista;
     }
-    
+
     public Cubiculo obtenerCubiculoPorId(int id) {
         try {
             final String SQL = "SELECT * FROM cubiculo WHERE id = ?";
@@ -372,11 +375,11 @@ public class Conexion {
 
             if (rst.next()) {
                 Cubiculo cubiculo = new Cubiculo();
-                
+
                 cubiculo.setId(rst.getInt("id"));
                 cubiculo.setNombre(rst.getString("nombre"));
                 cubiculo.setDisponible(rst.getInt("disponible"));
-                
+
                 return cubiculo;
             }
         } catch (SQLException e) {
@@ -387,7 +390,7 @@ public class Conexion {
     }
 
     /**
-    * Recupera todos los datos de la tabla parqueo.
+     * Recupera todos los datos de la tabla parqueo.
      */
     public List<Parqueo> obtenerParqueos() {
         List<Parqueo> lista = new ArrayList<>();
@@ -400,7 +403,7 @@ public class Conexion {
 
             while (rst.next()) {
                 Parqueo parqueo = new Parqueo();
-                
+
                 parqueo.setId(rst.getInt("id"));
                 parqueo.setFechaInicio(rst.getString("fecha_inicio"));
                 parqueo.setFechaFinal(rst.getString("fecha_final"));
@@ -411,7 +414,7 @@ public class Conexion {
                 parqueo.setCubiculoId(rst.getInt("cubiculo_id"));
                 parqueo.setReserva(rst.getInt("reserva"));
                 parqueo.setEstadoReserva(rst.getInt("estado_reserva"));
-                
+
                 lista.add(parqueo);
             }
         } catch (SQLException e) {
@@ -423,6 +426,7 @@ public class Conexion {
 
     /**
      * Recuperar el parqueo por id.
+     * 
      * @param id del parqueo.
      * @return parqueo.
      */
@@ -436,7 +440,7 @@ public class Conexion {
 
             if (rst.next()) {
                 Parqueo parqueo = new Parqueo();
-                
+
                 parqueo.setId(rst.getInt("id"));
                 parqueo.setFechaInicio(rst.getString("fecha_inicio"));
                 parqueo.setFechaFinal(rst.getString("fecha_final"));
@@ -447,7 +451,7 @@ public class Conexion {
                 parqueo.setCubiculoId(rst.getInt("cubiculo_id"));
                 parqueo.setReserva(rst.getInt("reserva"));
                 parqueo.setEstadoReserva(rst.getInt("estado_reserva"));
-                
+
                 return parqueo;
             }
         } catch (SQLException e) {
@@ -459,6 +463,7 @@ public class Conexion {
 
     /**
      * Recuperar el parqueo por vehiculo id.
+     * 
      * @param ID del vehiculo.
      * @return parqueo.
      */
@@ -474,7 +479,7 @@ public class Conexion {
 
             while (rst.next()) {
                 Parqueo parqueo = new Parqueo();
-                
+
                 parqueo.setId(rst.getInt("id"));
                 parqueo.setFechaInicio(rst.getString("fecha_inicio"));
                 parqueo.setFechaFinal(rst.getString("fecha_final"));
@@ -485,7 +490,7 @@ public class Conexion {
                 parqueo.setCubiculoId(rst.getInt("cubiculo_id"));
                 parqueo.setReserva(rst.getInt("reserva"));
                 parqueo.setEstadoReserva(rst.getInt("estado_reserva"));
-                
+
                 lista.add(parqueo);
             }
         } catch (SQLException e) {
@@ -497,6 +502,7 @@ public class Conexion {
 
     /**
      * Recuperar el parqueo por vehiculo id.
+     * 
      * @param ID del vehiculo.
      * @return parqueo.
      */
@@ -512,7 +518,7 @@ public class Conexion {
 
             while (rst.next()) {
                 Parqueo parqueo = new Parqueo();
-                
+
                 parqueo.setId(rst.getInt("id"));
                 parqueo.setFechaInicio(rst.getString("fecha_inicio"));
                 parqueo.setFechaFinal(rst.getString("fecha_final"));
@@ -523,7 +529,7 @@ public class Conexion {
                 parqueo.setCubiculoId(rst.getInt("cubiculo_id"));
                 parqueo.setReserva(rst.getInt("reserva"));
                 parqueo.setEstadoReserva(rst.getInt("estado_reserva"));
-                
+
                 lista.add(parqueo);
             }
         } catch (SQLException e) {
@@ -535,12 +541,13 @@ public class Conexion {
 
     /**
      * Buscar parqueo por ID de cubiculo.
+     * 
      * @param ID del cubiculo.
      * @return parqueo.
      */
     public List<Parqueo> obtenerParqueosPorCubiculoId(int id) {
         List<Parqueo> lista = new ArrayList<>();
-        
+
         try {
             final String SQL = "SELECT * FROM parqueo WHERE cubiculo_id = ?";
             PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
@@ -550,7 +557,7 @@ public class Conexion {
 
             while (rst.next()) {
                 Parqueo parqueo = new Parqueo();
-                
+
                 parqueo.setId(rst.getInt("id"));
                 parqueo.setFechaInicio(rst.getString("fecha_inicio"));
                 parqueo.setFechaFinal(rst.getString("fecha_final"));
@@ -561,7 +568,7 @@ public class Conexion {
                 parqueo.setCubiculoId(rst.getInt("cubiculo_id"));
                 parqueo.setReserva(rst.getInt("reserva"));
                 parqueo.setEstadoReserva(rst.getInt("estado_reserva"));
-                
+
                 lista.add(parqueo);
             }
         } catch (SQLException e) {
@@ -573,6 +580,7 @@ public class Conexion {
 
     /**
      * Crear un nuevo parqueo.
+     * 
      * @param parqueo a crear.
      * @return parqueo creado.
      */
@@ -600,6 +608,7 @@ public class Conexion {
 
     /**
      * Actualizar un parqueo por ID.
+     * 
      * @param Parqueo a actualizar.
      * @return parqueo actualizado.
      */
@@ -623,7 +632,60 @@ public class Conexion {
 
         return parqueo;
     }
-    
+
+    /**
+     * Crear una factura (fechaHora, impuesto, total, usuarioId, formaPagoId).
+     * 
+     * @param factura a crear.
+     * @param factura creada.
+     */
+    public Factura crearFactura(Factura factura) {
+        try {
+            final String SQL = "INSERT INTO factura (fecha_hora, impuesto, total, usuario_id, forma_pago_id) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, factura.getFechaHora());
+            pstmt.setDouble(2, factura.getImpuesto());
+            pstmt.setDouble(3, factura.getTotal());
+            pstmt.setInt(4, factura.getUsuarioId());
+            pstmt.setInt(5, factura.getFormaPagoId());
+
+            pstmt.executeUpdate();
+
+            ResultSet generatedKeys = pstmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                factura.setId(generatedKeys.getInt(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return factura;
+    }
+
+    /**
+     * Buscar una factura por ID.
+     * 
+     * @param factura a actualizar.
+     * @return factura actualizada.
+     */
+    public Factura actualizarFactura(Factura factura) {
+        try {
+            final String SQL = "UPDATE factura SET fecha_hora = ?, impuesto = ?, total = ?, usuario_id = ?, forma_pago_id = ? WHERE id = ?";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            pstmt.setString(1, factura.getFechaHora());
+            pstmt.setDouble(2, factura.getImpuesto());
+            pstmt.setDouble(3, factura.getTotal());
+            pstmt.setInt(4, factura.getUsuarioId());
+            pstmt.setInt(5, factura.getFormaPagoId());
+            pstmt.setInt(6, factura.getId());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return factura;
+    }
 
     public static void main(String[] args) {
         List<VehiculoTipo> vehiculosTipos = new Conexion().obtenerVehiculosTipos();
