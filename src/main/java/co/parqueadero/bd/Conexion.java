@@ -644,7 +644,7 @@ public class Conexion {
             final String SQL = "INSERT INTO factura (fecha_hora, impuesto, total, usuario_id, forma_pago_id) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, factura.getFechaHora());
-            pstmt.setDouble(2, factura.getImpuesto());
+            pstmt.setInt(2, factura.getImpuesto());
             pstmt.setDouble(3, factura.getTotal());
             pstmt.setInt(4, factura.getUsuarioId());
             pstmt.setInt(5, factura.getFormaPagoId());
@@ -663,7 +663,7 @@ public class Conexion {
     }
 
     /**
-     * Buscar una factura por ID.
+     * Actualizar una factura por ID.
      * 
      * @param factura a actualizar.
      * @return factura actualizada.
@@ -673,7 +673,7 @@ public class Conexion {
             final String SQL = "UPDATE factura SET fecha_hora = ?, impuesto = ?, total = ?, usuario_id = ?, forma_pago_id = ? WHERE id = ?";
             PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
             pstmt.setString(1, factura.getFechaHora());
-            pstmt.setDouble(2, factura.getImpuesto());
+            pstmt.setInt(2, factura.getImpuesto());
             pstmt.setDouble(3, factura.getTotal());
             pstmt.setInt(4, factura.getUsuarioId());
             pstmt.setInt(5, factura.getFormaPagoId());
@@ -685,6 +685,106 @@ public class Conexion {
         }
 
         return factura;
+    }
+
+    /**
+     * Obtener todas las facturas.
+     * 
+     * @return lista de facturas.
+     */
+    public List<Factura> obtenerFacturas() {
+        List<Factura> lista = new ArrayList<>();
+
+        try {
+            final String SQL = "SELECT * FROM factura";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+
+            ResultSet rst = pstmt.executeQuery();
+
+            while (rst.next()) {
+                Factura factura = new Factura();
+
+                factura.setId(rst.getInt("id"));
+                factura.setFechaHora(rst.getString("fecha_hora"));
+                factura.setImpuesto(rst.getInt("impuesto"));
+                factura.setTotal(rst.getDouble("total"));
+                factura.setUsuarioId(rst.getInt("usuario_id"));
+                factura.setFormaPagoId(rst.getInt("forma_pago_id"));
+
+                lista.add(factura);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return lista;
+    }
+
+    /**
+     * Obtener una factura por ID.
+     * 
+     * @param id de la factura.
+     * @return factura.
+     */
+    public Factura obtenerFactura(int id) {
+        Factura factura = null;
+
+        try {
+            final String SQL = "SELECT * FROM factura WHERE id = ?";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            pstmt.setInt(1, id);
+
+            ResultSet rst = pstmt.executeQuery();
+
+            while (rst.next()) {
+                factura = new Factura();
+                factura.setId(rst.getInt("id"));
+                factura.setFechaHora(rst.getString("fecha_hora"));
+                factura.setImpuesto(rst.getInt("impuesto"));
+                factura.setTotal(rst.getDouble("total"));
+                factura.setUsuarioId(rst.getInt("usuario_id"));
+                factura.setFormaPagoId(rst.getInt("forma_pago_id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return factura;
+    }
+
+    /*
+     * Obtener todas las facturas a partir del ID del usuario.
+     * 
+     * @param id del usuario.
+     * @return lista de facturas.
+     */
+    public List<Factura> obtenerFacturasPorUsuarioId(int id) {
+        List<Factura> lista = new ArrayList<>();
+
+        try {
+            final String SQL = "SELECT * FROM factura WHERE usuario_id = ?";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            pstmt.setInt(1, id);
+
+            ResultSet rst = pstmt.executeQuery();
+
+            while (rst.next()) {
+                Factura factura = new Factura();
+
+                factura.setId(rst.getInt("id"));
+                factura.setFechaHora(rst.getString("fecha_hora"));
+                factura.setImpuesto(rst.getInt("impuesto"));
+                factura.setTotal(rst.getDouble("total"));
+                factura.setUsuarioId(rst.getInt("usuario_id"));
+                factura.setFormaPagoId(rst.getInt("forma_pago_id"));
+
+                lista.add(factura);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return lista;
     }
 
     public static void main(String[] args) {
