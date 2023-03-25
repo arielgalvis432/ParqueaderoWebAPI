@@ -6,6 +6,7 @@ package co.parqueadero.modelos;
  */
 public class Parqueadero {
     private int id;
+    private String nombre;
     private String nit;
     private String direccion;
     private String telefono;
@@ -13,14 +14,16 @@ public class Parqueadero {
     public Parqueadero() {
     }
 
-    public Parqueadero(String nit, String direccion, String telefono) {
+    public Parqueadero(String nombre, String nit, String direccion, String telefono) {
+        this.nombre = nombre;
         this.nit = nit;
         this.direccion = direccion;
         this.telefono = telefono;
     }
 
-    public Parqueadero(int id, String nit, String direccion, String telefono) {
+    public Parqueadero(int id, String nombre, String nit, String direccion, String telefono) {
         this.id = id;
+        this.nombre = nombre;
         this.nit = nit;
         this.direccion = direccion;
         this.telefono = telefono;
@@ -32,6 +35,14 @@ public class Parqueadero {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getNit() {

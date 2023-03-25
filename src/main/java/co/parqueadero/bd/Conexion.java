@@ -8,6 +8,7 @@ import co.parqueadero.modelos.Cliente;
 import co.parqueadero.modelos.Cubiculo;
 import co.parqueadero.modelos.Factura;
 import co.parqueadero.modelos.FormaPago;
+import co.parqueadero.modelos.Parqueadero;
 import co.parqueadero.modelos.Parqueo;
 import co.parqueadero.modelos.Rol;
 import co.parqueadero.modelos.Vehiculo;
@@ -756,6 +757,7 @@ public class Conexion {
      * Obtener todas las facturas a partir del ID del usuario.
      * 
      * @param id del usuario.
+     * 
      * @return lista de facturas.
      */
     public List<Factura> obtenerFacturasPorUsuarioId(int id) {
@@ -785,6 +787,128 @@ public class Conexion {
         }
 
         return lista;
+    }
+
+    /**
+     * Crear un parqueadero (nombre, nit, direccion, telefono).
+     * 
+     * @param parqueadero a crear.
+     * @param parqueadero creado.
+     */
+    public Parqueadero crearParqueadero(Parqueadero parqueadero) {
+        try {
+            final String SQL = "INSERT INTO parqueadero (nombre, nit, direccion, telefono) VALUES (?, ?, ?, ?)";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, parqueadero.getNombre());
+            pstmt.setString(2, parqueadero.getNit());
+            pstmt.setString(3, parqueadero.getDireccion());
+            pstmt.setString(4, parqueadero.getTelefono());
+
+            pstmt.executeUpdate();
+
+            ResultSet generatedKeys = pstmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                parqueadero.setId(generatedKeys.getInt(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return parqueadero;
+    }
+
+    /**
+     * Obtener todos los parqueaderos.
+     * 
+     * @return lista de parqueaderos.
+     */
+    public List<Parqueadero> obtenerParqueaderos() {
+        List<Parqueadero> lista = new ArrayList<>();
+
+        try {
+            final String SQL = "SELECT * FROM parqueadero";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+
+            ResultSet rst = pstmt.executeQuery();
+
+            while (rst.next()) {
+                Parqueadero parqueadero = new Parqueadero();
+
+                parqueadero.setId(rst.getInt("id"));
+                parqueadero.setNombre(rst.getString("nombre"));
+                parqueadero.setNit(rst.getString("nit"));
+                parqueadero.setDireccion(rst.getString("direccion"));
+                parqueadero.setTelefono(rst.getString("telefono"));
+
+                lista.add(parqueadero);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return lista;
+    }
+
+    /**
+     * Obtener un parqueadero por ID.
+     * 
+     * @param ID del parqueadero.
+     * @return parqueadero.
+     */
+    public Parqueadero obtenerParqueaderoPorId(int id) {
+        Parqueadero parqueadero = null;
+
+        try {
+            final String SQL = "SELECT * FROM parqueadero WHERE id = ?";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            pstmt.setInt(1, id);
+
+            ResultSet rst = pstmt.executeQuery();
+
+            while (rst.next()) {
+                parqueadero = new Parqueadero();
+                parqueadero.setId(rst.getInt("id"));
+                parqueadero.setNombre(rst.getString("nombre"));
+                parqueadero.setNit(rst.getString("nit"));
+                parqueadero.setDireccion(rst.getString("direccion"));
+                parqueadero.setTelefono(rst.getString("telefono"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return parqueadero;
+    }
+
+    /**
+     * Obtener un parqueadero por NIT.
+     * 
+     * @param NIT del parqueadero.
+     * @return parqueadero.
+     */
+    public Parqueadero obtenerParqueaderoPorNit(String nit) {
+        Parqueadero parqueadero = null;
+
+        try {
+            final String SQL = "SELECT * FROM parqueadero WHERE nit = ?";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            pstmt.setString(1, nit);
+
+            ResultSet rst = pstmt.executeQuery();
+
+            while (rst.next()) {
+                parqueadero = new Parqueadero();
+                parqueadero.setId(rst.getInt("id"));
+                parqueadero.setNombre(rst.getString("nombre"));
+                parqueadero.setNit(rst.getString("nit"));
+                parqueadero.setDireccion(rst.getString("direccion"));
+                parqueadero.setTelefono(rst.getString("telefono"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return parqueadero;
     }
 
     public static void main(String[] args) {
