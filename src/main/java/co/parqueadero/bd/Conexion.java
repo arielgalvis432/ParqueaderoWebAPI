@@ -726,7 +726,7 @@ public class Conexion {
      * @param id de la factura.
      * @return factura.
      */
-    public Factura obtenerFactura(int id) {
+    public Factura obtenerFacturaPorId(int id) {
         Factura factura = null;
 
         try {
