@@ -918,4 +918,19 @@ public class Conexion {
             System.out.println(vehiculosTipo);
         }
     }
+
+    public FormaPago actualizarMedioPago(FormaPago entidad) {
+        try {
+            final String SQL = "UPDATE forma_pago SET nombre = ? WHERE id = ?";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            pstmt.setString(1, entidad.getNombre());
+            pstmt.setInt(2, entidad.getId());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return entidad;
+    }
 }
