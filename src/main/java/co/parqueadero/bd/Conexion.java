@@ -933,4 +933,22 @@ public class Conexion {
 
         return entidad;
     }
+
+    public Parqueadero actualizarParqueadero(Parqueadero entidad) {
+        try {
+            final String SQL = "UPDATE parqueadero SET nombre = ?, nit = ?, direccion = ?, telefono = ? WHERE id = ?";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            pstmt.setString(1, entidad.getNombre());
+            pstmt.setString(2, entidad.getNit());
+            pstmt.setString(3, entidad.getDireccion());
+            pstmt.setString(4, entidad.getTelefono());
+            pstmt.setInt(5, entidad.getId());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return entidad;
+    }
 }

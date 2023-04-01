@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import co.parqueadero.bd.Conexion;
 import co.parqueadero.modelos.Parqueadero;
+import javax.ws.rs.PUT;
 
 /**
  *
@@ -67,6 +68,25 @@ public class ParqueaderoResource {
             Parqueadero entidad = objectMapper.readValue(json, Parqueadero.class);
             
             new Conexion().crearParqueadero(entidad);
+            
+            return objectMapper.writeValueAsString(entidad);
+        } catch (Exception ex) {
+            Logger.getLogger(VehiculoTipoResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return "";
+    }
+    
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String put(String json) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        
+        try {
+            Parqueadero entidad = objectMapper.readValue(json, Parqueadero.class);
+            
+            new Conexion().actualizarParqueadero(entidad);
             
             return objectMapper.writeValueAsString(entidad);
         } catch (Exception ex) {
