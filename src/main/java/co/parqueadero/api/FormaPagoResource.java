@@ -41,7 +41,7 @@ public class FormaPagoResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response put(String json) {
+    public String put(String json) {
         ObjectMapper mapper = new ObjectMapper();
         FormaPago entidad = new FormaPago();
 
@@ -50,29 +50,11 @@ public class FormaPagoResource {
 
             entidad = new Conexion().actualizarMedioPago(entidad);
 
-            return Response
-                .status(200)
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Credentials", "true")
-                .header("Access-Control-Allow-Headers",
-                        "origin, content-type, accept, authorization")
-                .header("Access-Control-Allow-Methods",
-                        "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-                .entity(mapper.writeValueAsString(entidad))
-                .build();
+            return mapper.writeValueAsString(entidad);
         } catch (JsonProcessingException ex) {
             Logger.getLogger(ClienteResource.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return Response
-                .status(200)
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Credentials", "true")
-                .header("Access-Control-Allow-Headers",
-                        "origin, content-type, accept, authorization")
-                .header("Access-Control-Allow-Methods",
-                        "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-                .entity("")
-                .build();
+        return "";
     }
 }
