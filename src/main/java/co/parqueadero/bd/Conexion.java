@@ -214,12 +214,13 @@ public class Conexion {
 
     public Cliente crearCliente(Cliente cliente) {
         try {
-            final String SQL = "INSERT INTO cliente VALUES (DEFAULT, ?, ?, ?, ?)";
+            final String SQL = "INSERT INTO cliente VALUES (DEFAULT, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, cliente.getNombreCompleto());
             pstmt.setString(2, cliente.getEmail());
             pstmt.setString(3, cliente.getDocumento());
             pstmt.setString(4, cliente.getTelefono());
+            pstmt.setInt(5, cliente.getParqueaderoId());
 
             pstmt.executeUpdate();
 
@@ -235,6 +236,31 @@ public class Conexion {
         }
 
         return null;
+    }
+
+    /**
+     * Actualiza un cliente en la base de datos
+     * @param cliente Objeto cliente con los datos a actualizar
+     * 
+     * @return true si la actualización fue exitosa, false en caso contrario
+     */
+    public boolean actualizarCliente(Cliente cliente) {
+        try {
+            final String SQL = "UPDATE cliente SET nombre_completo = ?, email = ?, documento = ?, telefono = ?, parqueadero_id = ? WHERE id = ?";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            pstmt.setString(1, cliente.getNombreCompleto());
+            pstmt.setString(2, cliente.getEmail());
+            pstmt.setString(3, cliente.getDocumento());
+            pstmt.setString(4, cliente.getTelefono());
+            pstmt.setInt(5, cliente.getParqueaderoId());
+            pstmt.setInt(6, cliente.getId());
+
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return false;
     }
 
     public List<Vehiculo> obtenerVehiculos() {
