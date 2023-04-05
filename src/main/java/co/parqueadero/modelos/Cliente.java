@@ -11,6 +11,7 @@ public class Cliente {
     private String documento;
     private String telefono;
     private int parqueaderoId;
+    private String nombreParqueadero;
 
     public Cliente() {
     }
@@ -78,6 +79,14 @@ public class Cliente {
 
     public void setParqueaderoId(int parqueaderoId) {
         this.parqueaderoId = parqueaderoId;
+    }
+
+    public String getNombreParqueadero() {
+        return nombreParqueadero;
+    }
+
+    public void setNombreParqueadero(String nombreParqueadero) {
+        this.nombreParqueadero = nombreParqueadero;
     }
 
     @Override

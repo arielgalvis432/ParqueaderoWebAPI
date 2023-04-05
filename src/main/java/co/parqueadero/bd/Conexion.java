@@ -136,7 +136,7 @@ public class Conexion {
         List<Cliente> lista = new ArrayList<>();
 
         try {
-            final String SQL = "SELECT * FROM cliente";
+            final String SQL = "SELECT C.*, P.nombre FROM cliente C INNER JOIN parqueadero P ON C.parqueadero_id = P.id";
             PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
 
             ResultSet rst = pstmt.executeQuery();
@@ -149,6 +149,7 @@ public class Conexion {
                 cliente.setDocumento(rst.getString("documento"));
                 cliente.setTelefono(rst.getString("telefono"));
                 cliente.setParqueaderoId(rst.getInt("parqueadero_id"));
+                cliente.setNombreParqueadero(rst.getString("nombre"));
 
                 lista.add(cliente);
             }
