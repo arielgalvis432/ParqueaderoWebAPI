@@ -100,8 +100,6 @@ public class ClienteResource {
         try {
             System.out.println(json);
             Cliente entidad = objectMapper.readValue(json, Cliente.class);
-            System.out.println();
-            System.out.println(entidad);
             new Conexion().actualizarCliente(entidad);
             
             return objectMapper.writeValueAsString(entidad);

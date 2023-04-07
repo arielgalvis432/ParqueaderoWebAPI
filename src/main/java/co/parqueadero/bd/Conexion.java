@@ -267,7 +267,7 @@ public class Conexion {
         List<Vehiculo> lista = new ArrayList<>();
 
         try {
-            final String SQL = "SELECT * FROM vehiculo";
+            final String SQL = "SELECT V.*, C.nombre_completo, VT.nombre FROM vehiculo V INNER JOIN cliente C ON v.cliente_id = C.id INNER JOIN vehiculo_tipo VT ON v.vehiculo_tipo_id = VT.id";
             PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
 
             ResultSet rst = pstmt.executeQuery();
@@ -280,6 +280,8 @@ public class Conexion {
                 vehiculo.setColor(rst.getString("color"));
                 vehiculo.setClienteId(rst.getInt("cliente_id"));
                 vehiculo.setTipoVehiculoId(rst.getInt("vehiculo_tipo_id"));
+                vehiculo.setNombreCliente(rst.getString("nombre_completo"));
+                vehiculo.setNombreTipoVehiculo(rst.getString("nombre"));
 
                 lista.add(vehiculo);
             }
@@ -991,6 +993,23 @@ public class Conexion {
             pstmt.setString(1, entidad.getNombre());
             pstmt.setDouble(2, entidad.getTarifa());
             pstmt.setInt(3, entidad.getId());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+    }
+
+    public void actualizarVehiculo(Vehiculo entidad) {
+        try {
+            final String SQL = "UPDATE vehiculo SET placa = ?, marca = ?, color = ?, cliente_id = ?, vehiculo_tipo_id = ? WHERE id = ?";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            pstmt.setString(1, entidad.getPlaca());
+            pstmt.setString(2, entidad.getMarca());
+            pstmt.setString(3, entidad.getColor());
+            pstmt.setInt(4, entidad.getClienteId());
+            pstmt.setInt(5, entidad.getTipoVehiculoId());
+            pstmt.setInt(6, entidad.getId());
 
             pstmt.executeUpdate();
         } catch (SQLException e) {

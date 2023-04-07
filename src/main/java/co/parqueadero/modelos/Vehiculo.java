@@ -11,6 +11,8 @@ public class Vehiculo {
     private String color;
     private int clienteId;
     private int tipoVehiculoId;
+    private String nombreCliente;
+    private String nombreTipoVehiculo;
 
     public Vehiculo() {
     }
@@ -78,6 +80,22 @@ public class Vehiculo {
 
     public void setTipoVehiculoId(int tipoVehiculoId) {
         this.tipoVehiculoId = tipoVehiculoId;
+    }
+
+    public String getNombreCliente() {
+        return nombreCliente;
+    }
+
+    public void setNombreCliente(String nombreCliente) {
+        this.nombreCliente = nombreCliente;
+    }
+
+    public String getNombreTipoVehiculo() {
+        return nombreTipoVehiculo;
+    }
+
+    public void setNombreTipoVehiculo(String nombreTipoVehiculo) {
+        this.nombreTipoVehiculo = nombreTipoVehiculo;
     }
 
     @Override
