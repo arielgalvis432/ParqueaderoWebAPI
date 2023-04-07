@@ -978,4 +978,23 @@ public class Conexion {
 
         return entidad;
     }
+
+    /**
+     * Actualizar un vehiculo tipo (nombre, tarifa).
+     * 
+     * @param entidad a actualizar.
+     */
+    public void actualizarVehiculoTipo(VehiculoTipo entidad) {
+        try {
+            final String SQL = "UPDATE vehiculo_tipo SET nombre = ?, tarifa = ? WHERE id = ?";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            pstmt.setString(1, entidad.getNombre());
+            pstmt.setDouble(2, entidad.getTarifa());
+            pstmt.setInt(3, entidad.getId());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+    }
 }
