@@ -72,6 +72,23 @@ public class VehiculoResource {
         return "";
     }
     
+    @Path("buscar-por-cliente-id")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getVehiculosPorClienteId(@QueryParam("clienteId") int clienteId) {
+        List<Vehiculo> entidad = new Conexion().obtenerVehiculosPorClienteId(clienteId);
+        
+        ObjectMapper objectMapper = new ObjectMapper();
+        
+        try {
+            return objectMapper.writeValueAsString(entidad);
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(VehiculoTipoResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return "";
+    }
+    
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

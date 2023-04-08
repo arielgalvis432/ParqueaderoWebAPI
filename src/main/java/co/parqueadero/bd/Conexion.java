@@ -1017,4 +1017,33 @@ public class Conexion {
             e.printStackTrace(System.out);
         }
     }
+
+    public List<Vehiculo> obtenerVehiculosPorClienteId(int clienteId) {
+        List<Vehiculo> lista = new ArrayList<>();
+
+        try {
+            final String SQL = "SELECT * FROM vehiculo WHERE cliente_id = ?";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            pstmt.setInt(1, clienteId);
+
+            ResultSet rst = pstmt.executeQuery();
+
+            while (rst.next()) {
+                Vehiculo vehiculo = new Vehiculo();
+
+                vehiculo.setId(rst.getInt("id"));
+                vehiculo.setPlaca(rst.getString("placa"));
+                vehiculo.setMarca(rst.getString("marca"));
+                vehiculo.setColor(rst.getString("color"));
+                vehiculo.setClienteId(rst.getInt("cliente_id"));
+                vehiculo.setTipoVehiculoId(rst.getInt("vehiculo_tipo_id"));
+
+                lista.add(vehiculo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return lista;
+    }
 }
