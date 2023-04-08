@@ -616,12 +616,13 @@ public class Conexion {
      */
     public Parqueo crearParqueo(Parqueo parqueo) {
         try {
-            final String SQL = "INSERT INTO parqueo (fecha_inicio, hora_inicio, vehiculo_id, cubiculo_id) VALUES (?, ?, ?, ?)";
+            final String SQL = "INSERT INTO parqueo (fecha_inicio, hora_inicio, vehiculo_id, cubiculo_id, reserva) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, parqueo.getFechaInicio());
             pstmt.setString(2, parqueo.getHoraInicio());
             pstmt.setInt(3, parqueo.getVehiculoId());
             pstmt.setInt(4, parqueo.getCubiculoId());
+            pstmt.setInt(5, parqueo.getReserva());
 
             pstmt.executeUpdate();
 
