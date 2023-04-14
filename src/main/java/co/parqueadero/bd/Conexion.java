@@ -4,6 +4,15 @@
  */
 package co.parqueadero.bd;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
 import co.parqueadero.modelos.Cliente;
 import co.parqueadero.modelos.Cubiculo;
 import co.parqueadero.modelos.Factura;
@@ -13,14 +22,6 @@ import co.parqueadero.modelos.Parqueo;
 import co.parqueadero.modelos.Rol;
 import co.parqueadero.modelos.Vehiculo;
 import co.parqueadero.modelos.VehiculoTipo;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -426,7 +427,7 @@ public class Conexion {
         List<Parqueo> lista = new ArrayList<>();
 
         try {
-            final String SQL = "SELECT * FROM parqueo";
+            final String SQL = "SELECT P.*, C.nombre_completo AS nombre_cliente, C.documento, V.placa FROM cliente C INNER JOIN vehiculo V ON C.id = V.cliente_id INNER JOIN parqueo P ON V.id = P.vehiculo_id";
             PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
 
             ResultSet rst = pstmt.executeQuery();
@@ -440,10 +441,13 @@ public class Conexion {
                 parqueo.setHoraInicio(rst.getString("hora_inicio"));
                 parqueo.setHoraFinal(rst.getString("hora_final"));
                 parqueo.setVehiculoId(rst.getInt("vehiculo_id"));
-                parqueo.setFacturaId(rst.getInt("factura_id"));
-                parqueo.setCubiculoId(rst.getInt("cubiculo_id"));
-                parqueo.setReserva(rst.getInt("reserva"));
                 parqueo.setEstadoReserva(rst.getInt("estado_reserva"));
+                parqueo.setFacturaId(rst.getInt("factura_id"));
+                parqueo.setReserva(rst.getInt("reserva"));
+                parqueo.setCubiculoId(rst.getInt("cubiculo_id"));
+                parqueo.setNombreCliente(rst.getString("nombre_cliente"));
+                parqueo.setDocumentoCliente(rst.getString("documento"));
+                parqueo.setPlacaVehiculo(rst.getString("placa"));
 
                 lista.add(parqueo);
             }
@@ -1039,6 +1043,42 @@ public class Conexion {
                 vehiculo.setTipoVehiculoId(rst.getInt("vehiculo_tipo_id"));
 
                 lista.add(vehiculo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return lista;
+    }
+
+    public List<Parqueo> obtenerParqueosPorClienteDocumento(String documento) {
+        List<Parqueo> lista = new ArrayList<>();
+
+        try {
+            final String SQL = "SELECT P.*, C.nombre_completo AS nombre_cliente, C.documento, V.placa FROM cliente C INNER JOIN vehiculo V ON C.id = V.cliente_id INNER JOIN parqueo P ON V.id = P.vehiculo_id WHERE C.documento = ?";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            pstmt.setString(1, documento);
+
+            ResultSet rst = pstmt.executeQuery();
+
+            while (rst.next()) {
+                Parqueo parqueo = new Parqueo();
+
+                parqueo.setId(rst.getInt("id"));
+                parqueo.setFechaInicio(rst.getString("fecha_inicio"));
+                parqueo.setFechaFinal(rst.getString("fecha_final"));
+                parqueo.setHoraInicio(rst.getString("hora_inicio"));
+                parqueo.setHoraFinal(rst.getString("hora_final"));
+                parqueo.setVehiculoId(rst.getInt("vehiculo_id"));
+                parqueo.setEstadoReserva(rst.getInt("estado_reserva"));
+                parqueo.setFacturaId(rst.getInt("factura_id"));
+                parqueo.setReserva(rst.getInt("reserva"));
+                parqueo.setCubiculoId(rst.getInt("cubiculo_id"));
+                parqueo.setNombreCliente(rst.getString("nombre_cliente"));
+                parqueo.setDocumentoCliente(rst.getString("documento"));
+                parqueo.setPlacaVehiculo(rst.getString("placa"));
+
+                lista.add(parqueo);
             }
         } catch (SQLException e) {
             e.printStackTrace(System.out);

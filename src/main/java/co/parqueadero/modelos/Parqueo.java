@@ -15,6 +15,9 @@ public class Parqueo {
     private int vehiculoId;
     private int facturaId;
     private int cubiculoId;
+    private String nombreCliente;
+    private String documentoCliente;
+    private String placaVehiculo;
 
     public Parqueo() {
     }
@@ -122,6 +125,30 @@ public class Parqueo {
 
     public void setCubiculoId(int cubiculoId) {
         this.cubiculoId = cubiculoId;
+    }
+
+    public String getNombreCliente() {
+        return nombreCliente;
+    }
+
+    public void setNombreCliente(String nombreCliente) {
+        this.nombreCliente = nombreCliente;
+    }
+
+    public String getDocumentoCliente() {
+        return documentoCliente;
+    }
+
+    public void setDocumentoCliente(String documentoCliente) {
+        this.documentoCliente = documentoCliente;
+    }
+
+    public String getPlacaVehiculo() {
+        return placaVehiculo;
+    }
+
+    public void setPlacaVehiculo(String placaVehiculo) {
+        this.placaVehiculo = placaVehiculo;
     }
 
     @Override

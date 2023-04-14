@@ -112,6 +112,23 @@ public class ParqueoResource {
         return "";
     }
 
+    @GET
+    @Path("buscar-por-cliente-documento")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String buscarParqueoPorClienteDocumento(@QueryParam("documento") String documento) {
+        List<Parqueo> parqueo = new Conexion().obtenerParqueosPorClienteDocumento(documento);
+        
+        ObjectMapper objectMapper = new ObjectMapper();
+        
+        try {
+            return objectMapper.writeValueAsString(parqueo);
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(VehiculoTipoResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return "";
+    }
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
