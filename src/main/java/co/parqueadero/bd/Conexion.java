@@ -241,6 +241,7 @@ public class Conexion {
 
     /**
      * Actualiza un cliente en la base de datos
+     * 
      * @param cliente Objeto cliente con los datos a actualizar
      * 
      * @return true si la actualización fue exitosa, false en caso contrario
@@ -650,16 +651,34 @@ public class Conexion {
      */
     public Parqueo actualizarParqueo(Parqueo parqueo) {
         try {
-            final String SQL = "UPDATE parqueo SET fecha_inicio = ?, fecha_final = ?, hora_inicio = ?, hora_final = ?, vehiculo_id = ?, factura_id = ?, cubiculo_id = ? WHERE id = ?";
+            String SQL = "UPDATE parqueo SET fecha_inicio = ?, fecha_final = ?, hora_inicio = ?, hora_final = ?, vehiculo_id = ?, factura_id = ?, cubiculo_id = ?, reserva = ? WHERE id = ?";
+
+            if (parqueo.getFacturaId() == 0) {
+                SQL = "UPDATE parqueo SET fecha_inicio = ?, fecha_final = ?, hora_inicio = ?, hora_final = ?, vehiculo_id = ?, cubiculo_id = ?, reserva = ? WHERE id = ?";
+            }
+
             PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
-            pstmt.setString(1, parqueo.getFechaInicio());
-            pstmt.setString(2, parqueo.getFechaFinal());
-            pstmt.setString(3, parqueo.getHoraInicio());
-            pstmt.setString(4, parqueo.getHoraFinal());
-            pstmt.setInt(5, parqueo.getVehiculoId());
-            pstmt.setInt(6, parqueo.getFacturaId());
-            pstmt.setInt(7, parqueo.getCubiculoId());
-            pstmt.setInt(8, parqueo.getId());
+
+            if (parqueo.getFacturaId() == 0) {
+                pstmt.setString(1, parqueo.getFechaInicio());
+                pstmt.setString(2, parqueo.getFechaFinal());
+                pstmt.setString(3, parqueo.getHoraInicio());
+                pstmt.setString(4, parqueo.getHoraFinal());
+                pstmt.setInt(5, parqueo.getVehiculoId());
+                pstmt.setInt(6, parqueo.getCubiculoId());
+                pstmt.setInt(7, parqueo.getReserva());
+                pstmt.setInt(8, parqueo.getId());
+            } else {
+                pstmt.setString(1, parqueo.getFechaInicio());
+                pstmt.setString(2, parqueo.getFechaFinal());
+                pstmt.setString(3, parqueo.getHoraInicio());
+                pstmt.setString(4, parqueo.getHoraFinal());
+                pstmt.setInt(5, parqueo.getVehiculoId());
+                pstmt.setInt(6, parqueo.getFacturaId());
+                pstmt.setInt(7, parqueo.getCubiculoId());
+                pstmt.setInt(8, parqueo.getReserva());
+                pstmt.setInt(9, parqueo.getId());
+            }
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
