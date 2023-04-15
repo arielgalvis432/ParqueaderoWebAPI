@@ -427,7 +427,7 @@ public class Conexion {
         List<Parqueo> lista = new ArrayList<>();
 
         try {
-            final String SQL = "SELECT P.*, C.nombre_completo AS nombre_cliente, C.documento, V.placa FROM cliente C INNER JOIN vehiculo V ON C.id = V.cliente_id INNER JOIN parqueo P ON V.id = P.vehiculo_id";
+            final String SQL = "SELECT P.*, C.id AS clienteId, C.nombre_completo AS nombre_cliente, C.documento, V.placa FROM cliente C INNER JOIN vehiculo V ON C.id = V.cliente_id INNER JOIN parqueo P ON V.id = P.vehiculo_id";
             PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
 
             ResultSet rst = pstmt.executeQuery();
@@ -448,6 +448,7 @@ public class Conexion {
                 parqueo.setNombreCliente(rst.getString("nombre_cliente"));
                 parqueo.setDocumentoCliente(rst.getString("documento"));
                 parqueo.setPlacaVehiculo(rst.getString("placa"));
+                parqueo.setClienteId(rst.getInt("clienteId"));
 
                 lista.add(parqueo);
             }

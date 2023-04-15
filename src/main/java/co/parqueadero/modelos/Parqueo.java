@@ -18,6 +18,7 @@ public class Parqueo {
     private String nombreCliente;
     private String documentoCliente;
     private String placaVehiculo;
+    private int clienteId;
 
     public Parqueo() {
     }
@@ -149,6 +150,14 @@ public class Parqueo {
 
     public void setPlacaVehiculo(String placaVehiculo) {
         this.placaVehiculo = placaVehiculo;
+    }
+
+    public int getClienteId() {
+        return clienteId;
+    }
+
+    public void setClienteId(int clienteId) {
+        this.clienteId = clienteId;
     }
 
     @Override
