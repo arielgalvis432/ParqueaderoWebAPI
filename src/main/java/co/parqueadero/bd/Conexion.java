@@ -428,7 +428,7 @@ public class Conexion {
         List<Parqueo> lista = new ArrayList<>();
 
         try {
-            final String SQL = "SELECT P.*, C.id AS clienteId, C.nombre_completo AS nombre_cliente, C.documento, V.placa FROM cliente C INNER JOIN vehiculo V ON C.id = V.cliente_id INNER JOIN parqueo P ON V.id = P.vehiculo_id";
+            final String SQL = "SELECT P.*, C.id AS clienteId, C.nombre_completo AS nombre_cliente, C.documento, V.placa, VT.tarifa FROM cliente C INNER JOIN vehiculo V ON C.id = V.cliente_id INNER JOIN parqueo P ON V.id = P.vehiculo_id INNER JOIN vehiculo_tipo VT ON V.vehiculo_tipo_id = VT.id";
             PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
 
             ResultSet rst = pstmt.executeQuery();
@@ -450,6 +450,7 @@ public class Conexion {
                 parqueo.setDocumentoCliente(rst.getString("documento"));
                 parqueo.setPlacaVehiculo(rst.getString("placa"));
                 parqueo.setClienteId(rst.getInt("clienteId"));
+                parqueo.setTarifa(rst.getInt("tarifa"));
 
                 lista.add(parqueo);
             }
@@ -1075,7 +1076,7 @@ public class Conexion {
         List<Parqueo> lista = new ArrayList<>();
 
         try {
-            final String SQL = "SELECT P.*, C.nombre_completo AS nombre_cliente, C.documento, V.placa FROM cliente C INNER JOIN vehiculo V ON C.id = V.cliente_id INNER JOIN parqueo P ON V.id = P.vehiculo_id WHERE C.documento = ?";
+            final String SQL = "SELECT P.*, C.nombre_completo AS nombre_cliente, C.documento, V.placa, VT.tarifa FROM cliente C INNER JOIN vehiculo V ON C.id = V.cliente_id INNER JOIN parqueo P ON V.id = P.vehiculo_id INNER JOIN vehiculo_tipo VT ON VT.id = V.vehiculo_tipo_id WHERE C.documento = ?";
             PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
             pstmt.setString(1, documento);
 
@@ -1097,6 +1098,7 @@ public class Conexion {
                 parqueo.setNombreCliente(rst.getString("nombre_cliente"));
                 parqueo.setDocumentoCliente(rst.getString("documento"));
                 parqueo.setPlacaVehiculo(rst.getString("placa"));
+                parqueo.setTarifa(rst.getInt("tarifa"));
 
                 lista.add(parqueo);
             }
