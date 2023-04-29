@@ -697,13 +697,12 @@ public class Conexion {
      */
     public Factura crearFactura(Factura factura) {
         try {
-            final String SQL = "INSERT INTO factura (fecha_hora, impuesto, total, usuario_id, forma_pago_id) VALUES (?, ?, ?, ?, ?)";
+            final String SQL = "INSERT INTO factura (impuesto, total, usuario_id, forma_pago_id) VALUES (?, ?, ?, ?)";
             PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setString(1, factura.getFechaHora());
-            pstmt.setInt(2, factura.getImpuesto());
-            pstmt.setDouble(3, factura.getTotal());
-            pstmt.setInt(4, factura.getUsuarioId());
-            pstmt.setInt(5, factura.getFormaPagoId());
+            pstmt.setInt(1, factura.getImpuesto());
+            pstmt.setDouble(2, factura.getTotal());
+            pstmt.setInt(3, factura.getUsuarioId());
+            pstmt.setInt(4, factura.getFormaPagoId());
 
             pstmt.executeUpdate();
 
@@ -1107,5 +1106,23 @@ public class Conexion {
         }
 
         return lista;
+    }
+
+    /**
+     * Actualiza la factura de un parqueo.
+     * 
+     * @param facturaId id de la factura.
+    */
+    public void actualizarParqueoFactura(int parquedoId, int facturaId) {
+        try {
+            final String SQL = "UPDATE parqueo SET factura_id = ?, fecha_final = NOW(), hora_final = CURTIME() WHERE id = ?";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            pstmt.setInt(1, facturaId);
+            pstmt.setInt(2, parquedoId);
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
     }
 }

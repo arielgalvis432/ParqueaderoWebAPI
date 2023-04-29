@@ -11,6 +11,7 @@ public class Factura {
     private double total;
     private int usuarioId;
     private int formaPagoId;
+    private int parqueoId;
 
     public Factura() {
     }
@@ -80,8 +81,18 @@ public class Factura {
         this.formaPagoId = formaPagoId;
     }
 
+    public int getParqueoId() {
+        return parqueoId;
+    }
+
+    public void setParqueoId(int parqueoId) {
+        this.parqueoId = parqueoId; 
+    }
+
     @Override
     public String toString() {
-        return "Factura{" + "id=" + id + ", fechaHora=" + fechaHora + ", impuesto=" + impuesto + ", total=" + total + ", usuarioId=" + usuarioId + ", formaPagoId=" + formaPagoId + '}';
+        return "Factura{" + "id=" + id + ", fechaHora=" + fechaHora + ", impuesto=" + impuesto + ", total=" + total + ", usuarioId=" + usuarioId + ", formaPagoId=" + formaPagoId + ", parqueoId=" + parqueoId + '}';
     }
+
+    
 }

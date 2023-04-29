@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import co.parqueadero.bd.Conexion;
 import co.parqueadero.modelos.Factura;
+import co.parqueadero.modelos.Parqueo;
 
 /**
  *
@@ -86,6 +87,8 @@ public class FacturaResource {
             Factura entidad = objectMapper.readValue(json, Factura.class);
             
             new Conexion().crearFactura(entidad);
+            
+            new Conexion().actualizarParqueoFactura(entidad.getParqueoId(), entidad.getId());
             
             return objectMapper.writeValueAsString(entidad);
         } catch (Exception ex) {
