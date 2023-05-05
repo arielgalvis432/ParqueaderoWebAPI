@@ -1151,4 +1151,16 @@ public class Conexion {
             e.printStackTrace(System.out);
         }
     }
+
+    public void eliminarParqueoPorId(int id) {
+        try {
+            final String SQL = "DELETE FROM parqueo WHERE id = ?";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            pstmt.setInt(1, id);
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+    }
 }

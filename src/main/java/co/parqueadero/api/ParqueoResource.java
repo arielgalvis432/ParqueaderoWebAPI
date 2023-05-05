@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import co.parqueadero.bd.Conexion;
 import co.parqueadero.modelos.Parqueo;
+import javax.ws.rs.DELETE;
 
 /**
  *
@@ -181,6 +182,24 @@ public class ParqueoResource {
             
             return objectMapper.writeValueAsString(parqueo);
         } catch (Exception ex) {
+            Logger.getLogger(VehiculoTipoResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return "";
+    }
+    
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public String eliminarParqueoPorId(@QueryParam("id") String id) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        
+        try {
+            Parqueo parqueo = new Conexion().obtenerParqueoPorId(Integer.parseInt(id));
+            
+            new Conexion().eliminarParqueoPorId(parqueo.getId());
+            
+            return objectMapper.writeValueAsString(parqueo);
+        } catch (JsonProcessingException ex) {
             Logger.getLogger(VehiculoTipoResource.class.getName()).log(Level.SEVERE, null, ex);
         }
         
