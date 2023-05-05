@@ -387,6 +387,7 @@ public class Conexion {
                 cubiculo.setId(rst.getInt("id"));
                 cubiculo.setNombre(rst.getString("nombre"));
                 cubiculo.setDisponible(rst.getInt("disponible"));
+                cubiculo.setParqueaderoId(rst.getInt("parqueadero_id"));
 
                 lista.add(cubiculo);
             }
@@ -689,6 +690,31 @@ public class Conexion {
         return parqueo;
     }
 
+    /**
+     * Actualizar la fecha de inicio, hora inicio, reserva, cubíbulo ID, vehículo ID.
+     * 
+     * @param Parqueo a actualizar.
+     * @return parqueo actualizado.
+     */
+    public Parqueo actualizarParqueoReserva(Parqueo parqueo) {
+        try {
+            final String SQL = "UPDATE parqueo SET fecha_inicio = ?, hora_inicio = ?, reserva = ?, cubiculo_id = ?, vehiculo_id = ? WHERE id = ?";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            pstmt.setString(1, parqueo.getFechaInicio());
+            pstmt.setString(2, parqueo.getHoraInicio());
+            pstmt.setInt(3, parqueo.getReserva());
+            pstmt.setInt(4, parqueo.getCubiculoId());
+            pstmt.setInt(5, parqueo.getVehiculoId());
+            pstmt.setInt(6, parqueo.getId());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return parqueo;
+    }
+    
     /**
      * Crear una factura (fechaHora, impuesto, total, usuarioId, formaPagoId).
      * 

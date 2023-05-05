@@ -8,6 +8,7 @@ public class Cubiculo {
     private int id;
     private String nombre;
     private int disponible;
+    private int parqueaderoId;
 
     public Cubiculo() {
     }
@@ -47,6 +48,14 @@ public class Cubiculo {
         this.disponible = disponible;
     }
 
+    public int getParqueaderoId() {
+        return parqueaderoId;
+    }
+
+    public void setParqueaderoId(int parqueaderoId) {
+        this.parqueaderoId = parqueaderoId;
+    }
+    
     @Override
     public String toString() {
         return "Cubiculo{" + "id=" + id + ", nombre=" + nombre + ", disponible=" + disponible + '}';

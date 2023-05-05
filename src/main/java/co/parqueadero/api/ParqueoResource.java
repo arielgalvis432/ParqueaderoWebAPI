@@ -166,4 +166,24 @@ public class ParqueoResource {
         
         return "";
     }
+    
+    @Path("actualizacion")
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String putActualizacion(String json) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        
+        try {
+            Parqueo parqueo = objectMapper.readValue(json, Parqueo.class);
+            
+            new Conexion().actualizarParqueoReserva(parqueo);
+            
+            return objectMapper.writeValueAsString(parqueo);
+        } catch (Exception ex) {
+            Logger.getLogger(VehiculoTipoResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return "";
+    }
 }
