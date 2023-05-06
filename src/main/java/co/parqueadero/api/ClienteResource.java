@@ -109,4 +109,31 @@ public class ClienteResource {
         
         return "";
     }
+    
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("iniciar-sesion")
+    public String iniciarSesion(String entidadJson) {
+        ObjectMapper mapper = new ObjectMapper();
+        
+        try {
+            Cliente cliente = mapper.readValue(entidadJson, Cliente.class);
+            
+            cliente = new Conexion().iniciarSesionCliente(cliente.getDocumento(), cliente.getTelefono());
+            
+            if (cliente != null) {
+                return mapper.writeValueAsString(cliente);
+            } else {
+                cliente = new Cliente();
+                cliente.setId(0);
+                
+                return mapper.writeValueAsString(cliente);
+            }
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(ClienteResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return "";
+    }
 }

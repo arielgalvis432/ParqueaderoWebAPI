@@ -1163,4 +1163,30 @@ public class Conexion {
             e.printStackTrace(System.out);
         }
     }
+
+    public Cliente iniciarSesionCliente(String documento, String telefono) {
+        Cliente cliente = null;
+
+        try {
+            final String SQL = "SELECT * FROM cliente WHERE documento = ? AND telefono = ?";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            pstmt.setString(1, documento);
+            pstmt.setString(2, telefono);
+
+            ResultSet rst = pstmt.executeQuery();
+
+            if (rst.next()) {
+                cliente = new Cliente();
+
+                cliente.setId(rst.getInt("id"));
+                cliente.setNombreCompleto(rst.getString("nombre_completo"));
+                cliente.setDocumento(rst.getString("documento"));
+                cliente.setTelefono(rst.getString("telefono"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return cliente;
+    }
 }
