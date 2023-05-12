@@ -1258,4 +1258,38 @@ public class Conexion {
 
         return usuario;
     }
+    
+    /**
+     * Obtiene todos los usuarios.
+     * 
+     * @return Lista de usuarios.
+     */
+    public List<Usuario> obtenerUsuarios() {
+        List<Usuario> lista = new ArrayList<>();
+
+        try {
+            final String SQL = "SELECT * FROM usuario";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+
+            ResultSet rst = pstmt.executeQuery();
+
+            while (rst.next()) {
+                Usuario usuario = new Usuario();
+
+                usuario.setId(rst.getInt("id"));
+                usuario.setEmail(rst.getString("email"));
+                usuario.setNombreCompleto(rst.getString("nombre_completo"));
+                usuario.setTelefono(rst.getString("telefono"));
+                usuario.setRolId(rst.getInt("rol_id"));
+                usuario.setParqueaderoId(rst.getInt("parqueadero_id"));
+
+                lista.add(usuario);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return lista;
+    }
+
 }
