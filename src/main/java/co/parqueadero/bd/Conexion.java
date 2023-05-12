@@ -20,6 +20,7 @@ import co.parqueadero.modelos.FormaPago;
 import co.parqueadero.modelos.Parqueadero;
 import co.parqueadero.modelos.Parqueo;
 import co.parqueadero.modelos.Rol;
+import co.parqueadero.modelos.Usuario;
 import co.parqueadero.modelos.Vehiculo;
 import co.parqueadero.modelos.VehiculoTipo;
 
@@ -1188,5 +1189,73 @@ public class Conexion {
         }
 
         return cliente;
+    }
+
+    /**
+     * Crea un nuevo usuario.
+     * 
+     * @param entidad objeto con los datos del usuario.
+     * @return El usuario creado.
+     */
+
+    public Usuario crearUsuario(Usuario entidad) {
+        try {
+            final String SQL = "INSERT INTO usuario (email, password, nombre_completo, telefono, rol_id, parqueadero_id) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, entidad.getEmail());
+            pstmt.setString(2, entidad.getPassword());
+            pstmt.setString(3, entidad.getNombreCompleto());
+            pstmt.setString(4, entidad.getTelefono());
+            pstmt.setInt(5, entidad.getRolId());
+            pstmt.setInt(6, entidad.getParqueaderoId());
+
+            pstmt.executeUpdate();
+
+            ResultSet rst = pstmt.getGeneratedKeys();
+
+            if (rst.next()) {
+                entidad.setId(rst.getInt(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return entidad;
+    }
+
+    /**
+     * Inicio de sesión para un usuario con email y password.
+     * 
+     * @param email    email del usuario.
+     * @param password password del usuario.
+     * 
+     * @return El usuario si existe, de lo contrario null.
+     */
+    public Usuario iniciarSesionUsuario(String email, String password) {
+        Usuario usuario = null;
+
+        try {
+            final String SQL = "SELECT * FROM usuario WHERE email = ? AND password = ?";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            pstmt.setString(1, email);
+            pstmt.setString(2, password);
+
+            ResultSet rst = pstmt.executeQuery();
+
+            if (rst.next()) {
+                usuario = new Usuario();
+
+                usuario.setId(rst.getInt("id"));
+                usuario.setEmail(rst.getString("email"));
+                usuario.setNombreCompleto(rst.getString("nombre_completo"));
+                usuario.setTelefono(rst.getString("telefono"));
+                usuario.setRolId(rst.getInt("rol_id"));
+                usuario.setParqueaderoId(rst.getInt("parqueadero_id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return usuario;
     }
 }
