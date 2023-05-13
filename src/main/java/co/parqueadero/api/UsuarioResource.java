@@ -1,6 +1,7 @@
 package co.parqueadero.api;
 
 import co.parqueadero.bd.Conexion;
+import co.parqueadero.modelos.Cliente;
 import co.parqueadero.modelos.Usuario;
 import co.parqueadero.modelos.Vehiculo;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -13,6 +14,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -32,6 +34,23 @@ public class UsuarioResource {
             return objectMapper.writeValueAsString(lista);
         } catch (JsonProcessingException ex) {
             Logger.getLogger(VehiculoTipoResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return "";
+    }
+    
+    @Path("buscar-por-email")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getClientePorDocumento(@QueryParam("email") String email) {
+        Usuario entidad = new Conexion().buscarUsuarioPorEmail(email);
+        
+        ObjectMapper objectMapper = new ObjectMapper();
+        
+        try {
+            return objectMapper.writeValueAsString(entidad);
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(ClienteResource.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return "";

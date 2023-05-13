@@ -1292,4 +1292,37 @@ public class Conexion {
         return lista;
     }
 
+    /**
+     * Obtiene un usuario por su email.
+     * 
+     * @param email email del usuario.
+     * 
+     * @return El usuario si existe, de lo contrario null.
+     */
+    public Usuario buscarUsuarioPorEmail(String email) {
+        Usuario usuario = null;
+
+        try {
+            final String SQL = "SELECT * FROM usuario WHERE email = ?";
+            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            pstmt.setString(1, email);
+
+            ResultSet rst = pstmt.executeQuery();
+
+            if (rst.next()) {
+                usuario = new Usuario();
+
+                usuario.setId(rst.getInt("id"));
+                usuario.setEmail(rst.getString("email"));
+                usuario.setNombreCompleto(rst.getString("nombre_completo"));
+                usuario.setTelefono(rst.getString("telefono"));
+                usuario.setRolId(rst.getInt("rol_id"));
+                usuario.setParqueaderoId(rst.getInt("parqueadero_id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return usuario;
+    }
 }
