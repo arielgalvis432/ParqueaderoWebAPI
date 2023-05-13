@@ -74,4 +74,31 @@ public class UsuarioResource {
         
         return "";
     }
+    
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("iniciar-sesion")
+    public String iniciarSesion(String entidadJson) {
+        ObjectMapper mapper = new ObjectMapper();
+        
+        try {
+            Usuario usuario = mapper.readValue(entidadJson, Usuario.class);
+            
+            usuario = new Conexion().iniciarSesionUsuario(usuario.getEmail(), usuario.getPassword());
+            
+            if (usuario != null) {
+                return mapper.writeValueAsString(usuario);
+            } else {
+                usuario = new Usuario();
+                usuario.setId(0);
+                
+                return mapper.writeValueAsString(usuario);
+            }
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(ClienteResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return "";
+    }
 }
