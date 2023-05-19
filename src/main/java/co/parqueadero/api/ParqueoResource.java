@@ -16,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import co.parqueadero.bd.Conexion;
+import co.parqueadero.bd.DAO;
 import co.parqueadero.modelos.Parqueo;
 import javax.ws.rs.DELETE;
 
@@ -32,7 +32,7 @@ public class ParqueoResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String get() {
-        List<Parqueo> lista = new Conexion().obtenerParqueos();
+        List<Parqueo> lista = new DAO().obtenerParqueos();
         
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -49,7 +49,7 @@ public class ParqueoResource {
     @Path("buscar-por-id")
     @Produces(MediaType.APPLICATION_JSON)
     public String buscarPorId(@QueryParam("id") String id) {
-        Parqueo parqueo = new Conexion().obtenerParqueoPorId(Integer.parseInt(id));
+        Parqueo parqueo = new DAO().obtenerParqueoPorId(Integer.parseInt(id));
         
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -66,7 +66,7 @@ public class ParqueoResource {
     @Path("buscar-por-vehiculo-id")
     @Produces(MediaType.APPLICATION_JSON)
     public String buscarPorVehiculoId(@QueryParam("id") String id) {
-        List<Parqueo> parqueo = new Conexion().obtenerParqueosPorVehiculoId(Integer.parseInt(id));
+        List<Parqueo> parqueo = new DAO().obtenerParqueosPorVehiculoId(Integer.parseInt(id));
         
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -83,7 +83,7 @@ public class ParqueoResource {
     @Path("buscar-por-placa")
     @Produces(MediaType.APPLICATION_JSON)
     public String buscarPorVehiculoPlaca(@QueryParam("placa") String placa) {
-        List<Parqueo> parqueo = new Conexion().obtenerParqueosPorVehiculoPlaca(placa);
+        List<Parqueo> parqueo = new DAO().obtenerParqueosPorVehiculoPlaca(placa);
         
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -100,7 +100,7 @@ public class ParqueoResource {
     @Path("buscar-por-cubiculo-id")
     @Produces(MediaType.APPLICATION_JSON)
     public String buscarParqueoPorCubiculoId(@QueryParam("id") String id) {
-        List<Parqueo> parqueo = new Conexion().obtenerParqueosPorCubiculoId(Integer.parseInt(id));
+        List<Parqueo> parqueo = new DAO().obtenerParqueosPorCubiculoId(Integer.parseInt(id));
         
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -117,7 +117,7 @@ public class ParqueoResource {
     @Path("buscar-por-cliente-documento")
     @Produces(MediaType.APPLICATION_JSON)
     public String buscarParqueoPorClienteDocumento(@QueryParam("documento") String documento) {
-        List<Parqueo> parqueo = new Conexion().obtenerParqueosPorClienteDocumento(documento);
+        List<Parqueo> parqueo = new DAO().obtenerParqueosPorClienteDocumento(documento);
         
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -139,7 +139,7 @@ public class ParqueoResource {
         try {
             Parqueo parqueo = objectMapper.readValue(json, Parqueo.class);
             
-            new Conexion().crearParqueo(parqueo);
+            new DAO().crearParqueo(parqueo);
             
             return objectMapper.writeValueAsString(parqueo);
         } catch (Exception ex) {
@@ -158,7 +158,7 @@ public class ParqueoResource {
         try {
             Parqueo parqueo = objectMapper.readValue(json, Parqueo.class);
             
-            new Conexion().actualizarParqueo(parqueo);
+            new DAO().actualizarParqueo(parqueo);
             
             return objectMapper.writeValueAsString(parqueo);
         } catch (Exception ex) {
@@ -178,7 +178,7 @@ public class ParqueoResource {
         try {
             Parqueo parqueo = objectMapper.readValue(json, Parqueo.class);
             
-            new Conexion().actualizarParqueoReserva(parqueo);
+            new DAO().actualizarParqueoReserva(parqueo);
             
             return objectMapper.writeValueAsString(parqueo);
         } catch (Exception ex) {
@@ -194,9 +194,9 @@ public class ParqueoResource {
         ObjectMapper objectMapper = new ObjectMapper();
         
         try {
-            Parqueo parqueo = new Conexion().obtenerParqueoPorId(Integer.parseInt(id));
+            Parqueo parqueo = new DAO().obtenerParqueoPorId(Integer.parseInt(id));
             
-            new Conexion().eliminarParqueoPorId(parqueo.getId());
+            new DAO().eliminarParqueoPorId(parqueo.getId());
             
             return objectMapper.writeValueAsString(parqueo);
         } catch (JsonProcessingException ex) {

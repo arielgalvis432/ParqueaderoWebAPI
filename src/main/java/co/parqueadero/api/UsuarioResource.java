@@ -1,6 +1,6 @@
 package co.parqueadero.api;
 
-import co.parqueadero.bd.Conexion;
+import co.parqueadero.bd.DAO;
 import co.parqueadero.modelos.Cliente;
 import co.parqueadero.modelos.Usuario;
 import co.parqueadero.modelos.Vehiculo;
@@ -26,7 +26,7 @@ public class UsuarioResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String get() {
-        List<Usuario> lista = new Conexion().obtenerUsuarios();
+        List<Usuario> lista = new DAO().obtenerUsuarios();
         
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -43,7 +43,7 @@ public class UsuarioResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getClientePorDocumento(@QueryParam("email") String email) {
-        Usuario entidad = new Conexion().buscarUsuarioPorEmail(email);
+        Usuario entidad = new DAO().buscarUsuarioPorEmail(email);
         
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -65,7 +65,7 @@ public class UsuarioResource {
         try {
             Usuario entidad = mapper.readValue(entidadJson, Usuario.class);
             
-            entidad = new Conexion().crearUsuario(entidad);
+            entidad = new DAO().crearUsuario(entidad);
             
             return mapper.writeValueAsString(entidad);
         } catch (JsonProcessingException ex) {
@@ -85,7 +85,7 @@ public class UsuarioResource {
         try {
             Usuario usuario = mapper.readValue(entidadJson, Usuario.class);
             
-            usuario = new Conexion().iniciarSesionUsuario(usuario.getEmail(), usuario.getPassword());
+            usuario = new DAO().iniciarSesionUsuario(usuario.getEmail(), usuario.getPassword());
             
             if (usuario != null) {
                 return mapper.writeValueAsString(usuario);

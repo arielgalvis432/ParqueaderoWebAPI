@@ -16,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import co.parqueadero.bd.Conexion;
+import co.parqueadero.bd.DAO;
 import co.parqueadero.modelos.Factura;
 import co.parqueadero.modelos.Parqueo;
 
@@ -30,7 +30,7 @@ public class FacturaResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getFactura(){
-        List<Factura> lista = new Conexion().obtenerFacturas();
+        List<Factura> lista = new DAO().obtenerFacturas();
         
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -47,7 +47,7 @@ public class FacturaResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getPorId(@QueryParam("id") String id) {
-        Factura entidad = new Conexion().obtenerFacturaPorId(Integer.parseInt(id));
+        Factura entidad = new DAO().obtenerFacturaPorId(Integer.parseInt(id));
         
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -64,7 +64,7 @@ public class FacturaResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getPorUsuarioId(@QueryParam("id") String id) {
-        List<Factura> entidad = new Conexion().obtenerFacturasPorUsuarioId(Integer.parseInt(id));
+        List<Factura> entidad = new DAO().obtenerFacturasPorUsuarioId(Integer.parseInt(id));
         
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -86,9 +86,9 @@ public class FacturaResource {
         try {
             Factura entidad = objectMapper.readValue(json, Factura.class);
             
-            new Conexion().crearFactura(entidad);
+            new DAO().crearFactura(entidad);
             
-            new Conexion().actualizarParqueoFactura(entidad.getParqueoId(), entidad.getId());
+            new DAO().actualizarParqueoFactura(entidad.getParqueoId(), entidad.getId());
             
             return objectMapper.writeValueAsString(entidad);
         } catch (Exception ex) {
@@ -107,7 +107,7 @@ public class FacturaResource {
         try {
             Factura entidad = objectMapper.readValue(json, Factura.class);
             
-            new Conexion().actualizarFactura(entidad);
+            new DAO().actualizarFactura(entidad);
             
             return objectMapper.writeValueAsString(entidad);
         } catch (Exception ex) {

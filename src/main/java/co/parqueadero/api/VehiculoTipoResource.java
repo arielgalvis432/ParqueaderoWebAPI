@@ -4,7 +4,7 @@
  */
 package co.parqueadero.api;
 
-import co.parqueadero.bd.Conexion;
+import co.parqueadero.bd.DAO;
 import co.parqueadero.modelos.VehiculoTipo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,7 +27,7 @@ public class VehiculoTipoResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String get() {
-        List<VehiculoTipo> vehiculoTipos = new Conexion().obtenerVehiculosTipos();
+        List<VehiculoTipo> vehiculoTipos = new DAO().obtenerVehiculosTipos();
         
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -48,7 +48,7 @@ public class VehiculoTipoResource {
         
         try {
             VehiculoTipo entidad = objectMapper.readValue(json, VehiculoTipo.class);
-            new Conexion().actualizarVehiculoTipo(entidad);
+            new DAO().actualizarVehiculoTipo(entidad);
             
             return objectMapper.writeValueAsString(entidad);
         } catch (Exception ex) {

@@ -4,7 +4,7 @@
  */
 package co.parqueadero.api;
 
-import co.parqueadero.bd.Conexion;
+import co.parqueadero.bd.DAO;
 import co.parqueadero.modelos.Rol;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +25,7 @@ public class RolResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String get() {
-        List<Rol> roles = new Conexion().obtenerRoles();
+        List<Rol> roles = new DAO().obtenerRoles();
         
         ObjectMapper objectMapper = new ObjectMapper();
         

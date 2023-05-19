@@ -9,6 +9,7 @@ public class Cubiculo {
     private String nombre;
     private int disponible;
     private int parqueaderoId;
+    private String fechaFinal;
 
     public Cubiculo() {
     }
@@ -54,6 +55,14 @@ public class Cubiculo {
 
     public void setParqueaderoId(int parqueaderoId) {
         this.parqueaderoId = parqueaderoId;
+    }
+
+    public String getFechaFinal() {
+        return fechaFinal;
+    }
+
+    public void setFechaFinal(String fechaFinal) {
+        this.fechaFinal = fechaFinal;
     }
     
     @Override

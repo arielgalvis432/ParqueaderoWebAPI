@@ -1,6 +1,6 @@
 package co.parqueadero.api;
 
-import co.parqueadero.bd.Conexion;
+import co.parqueadero.bd.DAO;
 import co.parqueadero.modelos.Cliente;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +25,7 @@ public class ClienteResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String get() {
-        List<Cliente> lista = new Conexion().obtenerClientes();
+        List<Cliente> lista = new DAO().obtenerClientes();
         
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -42,7 +42,7 @@ public class ClienteResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getClientePorId(@QueryParam("id") String id) {
-        Cliente cliente = new Conexion().obtenerClientePorId(Integer.parseInt(id));
+        Cliente cliente = new DAO().obtenerClientePorId(Integer.parseInt(id));
         
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -59,7 +59,7 @@ public class ClienteResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getClientePorDocumento(@QueryParam("documento") String documento) {
-        Cliente cliente = new Conexion().obtenerClientePorDocumento(documento);
+        Cliente cliente = new DAO().obtenerClientePorDocumento(documento);
         
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -81,7 +81,7 @@ public class ClienteResource {
         try {
             Cliente cliente = mapper.readValue(entidadJson, Cliente.class);
             
-            cliente = new Conexion().crearCliente(cliente);
+            cliente = new DAO().crearCliente(cliente);
             
             return mapper.writeValueAsString(cliente);
         } catch (JsonProcessingException ex) {
@@ -100,7 +100,7 @@ public class ClienteResource {
         try {
             System.out.println(json);
             Cliente entidad = objectMapper.readValue(json, Cliente.class);
-            new Conexion().actualizarCliente(entidad);
+            new DAO().actualizarCliente(entidad);
             
             return objectMapper.writeValueAsString(entidad);
         } catch (Exception ex) {
@@ -120,7 +120,7 @@ public class ClienteResource {
         try {
             Cliente cliente = mapper.readValue(entidadJson, Cliente.class);
             
-            cliente = new Conexion().iniciarSesionCliente(cliente.getDocumento(), cliente.getTelefono());
+            cliente = new DAO().iniciarSesionCliente(cliente.getDocumento(), cliente.getTelefono());
             
             if (cliente != null) {
                 return mapper.writeValueAsString(cliente);

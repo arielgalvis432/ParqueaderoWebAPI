@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import co.parqueadero.bd.Conexion;
+import co.parqueadero.bd.DAO;
 import co.parqueadero.modelos.Parqueadero;
 import javax.ws.rs.PUT;
 
@@ -28,7 +28,7 @@ public class ParqueaderoResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getFactura(){
-        List<Parqueadero> lista = new Conexion().obtenerParqueaderos();
+        List<Parqueadero> lista = new DAO().obtenerParqueaderos();
         
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -45,7 +45,7 @@ public class ParqueaderoResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getPorId(@QueryParam("id") String id) {
-        Parqueadero entidad = new Conexion().obtenerParqueaderoPorId(Integer.parseInt(id));
+        Parqueadero entidad = new DAO().obtenerParqueaderoPorId(Integer.parseInt(id));
         
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -67,7 +67,7 @@ public class ParqueaderoResource {
         try {
             Parqueadero entidad = objectMapper.readValue(json, Parqueadero.class);
             
-            new Conexion().crearParqueadero(entidad);
+            new DAO().crearParqueadero(entidad);
             
             return objectMapper.writeValueAsString(entidad);
         } catch (Exception ex) {
@@ -86,7 +86,7 @@ public class ParqueaderoResource {
         try {
             Parqueadero entidad = objectMapper.readValue(json, Parqueadero.class);
             
-            new Conexion().actualizarParqueadero(entidad);
+            new DAO().actualizarParqueadero(entidad);
             
             return objectMapper.writeValueAsString(entidad);
         } catch (Exception ex) {

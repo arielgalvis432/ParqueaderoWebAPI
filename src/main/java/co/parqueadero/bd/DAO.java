@@ -28,42 +28,12 @@ import co.parqueadero.modelos.VehiculoTipo;
  *
  * @author Felix Linares
  */
-public class Conexion {
-
-    // Librería de MySQL
-    public String driver = "com.mysql.cj.jdbc.Driver";
-
-    // Nombre de la base de datos
-    public String database = "parqueadero";
-
-    // Host
-    public String hostname = "localhost";
-
-    // Puerto
-    public String port = "3306";
-
-    // Ruta de nuestra base de datos (desactivamos el uso de SSL con
-    // "?useSSL=false")
-    public String url = "jdbc:mysql://" + hostname + ":" + port + "/" + database
-            + "?allowPublicKeyRetrieval=true&useSSL=false";
-
-    // Nombre de usuario
-    public String username = "root";
-
-    // Clave de usuario
-    public String password = "";
-
-    public Connection conectarMySQL() {
-        Connection conn = null;
-
-        try {
-            Class.forName(driver);
-            conn = DriverManager.getConnection(url, username, password);
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
-
-        return conn;
+public class DAO {
+    
+    private AccesoBD accesoBD;
+    
+    public DAO() {
+        accesoBD = new AccesoBD();
     }
 
     public List<VehiculoTipo> obtenerVehiculosTipos() {
@@ -71,7 +41,7 @@ public class Conexion {
 
         try {
             final String SQL = "SELECT * FROM vehiculo_tipo";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
 
             ResultSet rst = pstmt.executeQuery();
 
@@ -94,7 +64,7 @@ public class Conexion {
 
         try {
             final String SQL = "SELECT * FROM rol";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
 
             ResultSet rst = pstmt.executeQuery();
 
@@ -116,7 +86,7 @@ public class Conexion {
 
         try {
             final String SQL = "SELECT * FROM forma_pago";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
 
             ResultSet rst = pstmt.executeQuery();
 
@@ -139,7 +109,7 @@ public class Conexion {
 
         try {
             final String SQL = "SELECT C.*, P.nombre FROM cliente C INNER JOIN parqueadero P ON C.parqueadero_id = P.id";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
 
             ResultSet rst = pstmt.executeQuery();
 
@@ -165,7 +135,7 @@ public class Conexion {
     public Cliente obtenerClientePorId(int id) {
         try {
             final String SQL = "SELECT * FROM cliente WHERE id = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setInt(1, id);
 
             ResultSet rst = pstmt.executeQuery();
@@ -191,7 +161,7 @@ public class Conexion {
     public Cliente obtenerClientePorDocumento(String documento) {
         try {
             final String SQL = "SELECT * FROM cliente WHERE documento = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setString(1, documento);
 
             ResultSet rst = pstmt.executeQuery();
@@ -217,7 +187,7 @@ public class Conexion {
     public Cliente crearCliente(Cliente cliente) {
         try {
             final String SQL = "INSERT INTO cliente VALUES (DEFAULT, ?, ?, ?, ?, ?)";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, cliente.getNombreCompleto());
             pstmt.setString(2, cliente.getEmail());
             pstmt.setString(3, cliente.getDocumento());
@@ -250,7 +220,7 @@ public class Conexion {
     public boolean actualizarCliente(Cliente cliente) {
         try {
             final String SQL = "UPDATE cliente SET nombre_completo = ?, email = ?, documento = ?, telefono = ?, parqueadero_id = ? WHERE id = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setString(1, cliente.getNombreCompleto());
             pstmt.setString(2, cliente.getEmail());
             pstmt.setString(3, cliente.getDocumento());
@@ -271,7 +241,7 @@ public class Conexion {
 
         try {
             final String SQL = "SELECT V.*, C.nombre_completo, VT.nombre FROM vehiculo V INNER JOIN cliente C ON v.cliente_id = C.id INNER JOIN vehiculo_tipo VT ON v.vehiculo_tipo_id = VT.id";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
 
             ResultSet rst = pstmt.executeQuery();
 
@@ -298,7 +268,7 @@ public class Conexion {
     public Vehiculo obtenerVehiculoPorId(int id) {
         try {
             final String SQL = "SELECT * FROM vehiculo WHERE id = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setInt(1, id);
 
             ResultSet rst = pstmt.executeQuery();
@@ -324,7 +294,7 @@ public class Conexion {
     public Vehiculo obtenerVehiculoPorPlaca(String placa) {
         try {
             final String SQL = "SELECT * FROM vehiculo WHERE placa = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setString(1, placa);
 
             ResultSet rst = pstmt.executeQuery();
@@ -350,7 +320,7 @@ public class Conexion {
     public Vehiculo crearVehiculo(Vehiculo vehiculo) {
         try {
             final String SQL = "INSERT INTO vehiculo VALUES (DEFAULT, ?, ?, ?, ?, ?)";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, vehiculo.getPlaca());
             pstmt.setString(2, vehiculo.getMarca());
             pstmt.setString(3, vehiculo.getColor());
@@ -378,7 +348,7 @@ public class Conexion {
 
         try {
             final String SQL = "SELECT * FROM cubiculo";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
 
             ResultSet rst = pstmt.executeQuery();
 
@@ -402,7 +372,7 @@ public class Conexion {
     public Cubiculo obtenerCubiculoPorId(int id) {
         try {
             final String SQL = "SELECT * FROM cubiculo WHERE id = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setInt(1, id);
 
             ResultSet rst = pstmt.executeQuery();
@@ -431,7 +401,7 @@ public class Conexion {
 
         try {
             final String SQL = "SELECT P.*, C.id AS clienteId, C.nombre_completo AS nombre_cliente, C.documento, V.placa, VT.tarifa FROM cliente C INNER JOIN vehiculo V ON C.id = V.cliente_id INNER JOIN parqueo P ON V.id = P.vehiculo_id INNER JOIN vehiculo_tipo VT ON V.vehiculo_tipo_id = VT.id";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
 
             ResultSet rst = pstmt.executeQuery();
 
@@ -472,7 +442,7 @@ public class Conexion {
     public Parqueo obtenerParqueoPorId(int id) {
         try {
             final String SQL = "SELECT * FROM parqueo WHERE id = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setInt(1, id);
 
             ResultSet rst = pstmt.executeQuery();
@@ -511,7 +481,7 @@ public class Conexion {
 
         try {
             final String SQL = "SELECT * FROM parqueo WHERE vehiculo_id = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setInt(1, id);
 
             ResultSet rst = pstmt.executeQuery();
@@ -550,7 +520,7 @@ public class Conexion {
 
         try {
             final String SQL = "SELECT * FROM parqueo WHERE placa = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setString(1, placa);
 
             ResultSet rst = pstmt.executeQuery();
@@ -589,7 +559,7 @@ public class Conexion {
 
         try {
             final String SQL = "SELECT * FROM parqueo WHERE cubiculo_id = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setInt(1, id);
 
             ResultSet rst = pstmt.executeQuery();
@@ -626,7 +596,7 @@ public class Conexion {
     public Parqueo crearParqueo(Parqueo parqueo) {
         try {
             final String SQL = "INSERT INTO parqueo (fecha_inicio, hora_inicio, vehiculo_id, cubiculo_id, reserva) VALUES (?, ?, ?, ?, ?)";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, parqueo.getFechaInicio());
             pstmt.setString(2, parqueo.getHoraInicio());
             pstmt.setInt(3, parqueo.getVehiculoId());
@@ -660,7 +630,7 @@ public class Conexion {
                 SQL = "UPDATE parqueo SET fecha_inicio = ?, fecha_final = ?, hora_inicio = ?, hora_final = ?, vehiculo_id = ?, cubiculo_id = ?, reserva = ? WHERE id = ?";
             }
 
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
 
             if (parqueo.getFacturaId() == 0) {
                 pstmt.setString(1, parqueo.getFechaInicio());
@@ -700,7 +670,7 @@ public class Conexion {
     public Parqueo actualizarParqueoReserva(Parqueo parqueo) {
         try {
             final String SQL = "UPDATE parqueo SET fecha_inicio = ?, hora_inicio = ?, reserva = ?, cubiculo_id = ?, vehiculo_id = ? WHERE id = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setString(1, parqueo.getFechaInicio());
             pstmt.setString(2, parqueo.getHoraInicio());
             pstmt.setInt(3, parqueo.getReserva());
@@ -725,7 +695,7 @@ public class Conexion {
     public Factura crearFactura(Factura factura) {
         try {
             final String SQL = "INSERT INTO factura (impuesto, total, usuario_id, forma_pago_id) VALUES (?, ?, ?, ?)";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             pstmt.setInt(1, factura.getImpuesto());
             pstmt.setDouble(2, factura.getTotal());
             pstmt.setInt(3, factura.getUsuarioId());
@@ -753,7 +723,7 @@ public class Conexion {
     public Factura actualizarFactura(Factura factura) {
         try {
             final String SQL = "UPDATE factura SET fecha_hora = ?, impuesto = ?, total = ?, usuario_id = ?, forma_pago_id = ? WHERE id = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setString(1, factura.getFechaHora());
             pstmt.setInt(2, factura.getImpuesto());
             pstmt.setDouble(3, factura.getTotal());
@@ -779,7 +749,7 @@ public class Conexion {
 
         try {
             final String SQL = "SELECT * FROM factura";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
 
             ResultSet rst = pstmt.executeQuery();
 
@@ -813,7 +783,7 @@ public class Conexion {
 
         try {
             final String SQL = "SELECT * FROM factura WHERE id = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setInt(1, id);
 
             ResultSet rst = pstmt.executeQuery();
@@ -846,7 +816,7 @@ public class Conexion {
 
         try {
             final String SQL = "SELECT * FROM factura WHERE usuario_id = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setInt(1, id);
 
             ResultSet rst = pstmt.executeQuery();
@@ -879,7 +849,7 @@ public class Conexion {
     public Parqueadero crearParqueadero(Parqueadero parqueadero) {
         try {
             final String SQL = "INSERT INTO parqueadero (nombre, nit, direccion, telefono) VALUES (?, ?, ?, ?)";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, parqueadero.getNombre());
             pstmt.setString(2, parqueadero.getNit());
             pstmt.setString(3, parqueadero.getDireccion());
@@ -908,7 +878,7 @@ public class Conexion {
 
         try {
             final String SQL = "SELECT * FROM parqueadero";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
 
             ResultSet rst = pstmt.executeQuery();
 
@@ -941,7 +911,7 @@ public class Conexion {
 
         try {
             final String SQL = "SELECT * FROM parqueadero WHERE id = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setInt(1, id);
 
             ResultSet rst = pstmt.executeQuery();
@@ -972,7 +942,7 @@ public class Conexion {
 
         try {
             final String SQL = "SELECT * FROM parqueadero WHERE nit = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setString(1, nit);
 
             ResultSet rst = pstmt.executeQuery();
@@ -993,7 +963,7 @@ public class Conexion {
     }
 
     public static void main(String[] args) {
-        List<VehiculoTipo> vehiculosTipos = new Conexion().obtenerVehiculosTipos();
+        List<VehiculoTipo> vehiculosTipos = new DAO().obtenerVehiculosTipos();
 
         for (VehiculoTipo vehiculosTipo : vehiculosTipos) {
             System.out.println(vehiculosTipo);
@@ -1003,7 +973,7 @@ public class Conexion {
     public FormaPago actualizarMedioPago(FormaPago entidad) {
         try {
             final String SQL = "UPDATE forma_pago SET nombre = ? WHERE id = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setString(1, entidad.getNombre());
             pstmt.setInt(2, entidad.getId());
 
@@ -1018,7 +988,7 @@ public class Conexion {
     public Parqueadero actualizarParqueadero(Parqueadero entidad) {
         try {
             final String SQL = "UPDATE parqueadero SET nombre = ?, nit = ?, direccion = ?, telefono = ? WHERE id = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setString(1, entidad.getNombre());
             pstmt.setString(2, entidad.getNit());
             pstmt.setString(3, entidad.getDireccion());
@@ -1041,7 +1011,7 @@ public class Conexion {
     public void actualizarVehiculoTipo(VehiculoTipo entidad) {
         try {
             final String SQL = "UPDATE vehiculo_tipo SET nombre = ?, tarifa = ? WHERE id = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setString(1, entidad.getNombre());
             pstmt.setDouble(2, entidad.getTarifa());
             pstmt.setInt(3, entidad.getId());
@@ -1055,7 +1025,7 @@ public class Conexion {
     public void actualizarVehiculo(Vehiculo entidad) {
         try {
             final String SQL = "UPDATE vehiculo SET placa = ?, marca = ?, color = ?, cliente_id = ?, vehiculo_tipo_id = ? WHERE id = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setString(1, entidad.getPlaca());
             pstmt.setString(2, entidad.getMarca());
             pstmt.setString(3, entidad.getColor());
@@ -1074,7 +1044,7 @@ public class Conexion {
 
         try {
             final String SQL = "SELECT * FROM vehiculo WHERE cliente_id = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setInt(1, clienteId);
 
             ResultSet rst = pstmt.executeQuery();
@@ -1103,7 +1073,7 @@ public class Conexion {
 
         try {
             final String SQL = "SELECT P.*, C.nombre_completo AS nombre_cliente, C.documento, V.placa, VT.tarifa FROM cliente C INNER JOIN vehiculo V ON C.id = V.cliente_id INNER JOIN parqueo P ON V.id = P.vehiculo_id INNER JOIN vehiculo_tipo VT ON VT.id = V.vehiculo_tipo_id WHERE C.documento = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setString(1, documento);
 
             ResultSet rst = pstmt.executeQuery();
@@ -1143,7 +1113,7 @@ public class Conexion {
     public void actualizarParqueoFactura(int parquedoId, int facturaId) {
         try {
             final String SQL = "UPDATE parqueo SET factura_id = ?, fecha_final = NOW(), hora_final = CURTIME() WHERE id = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setInt(1, facturaId);
             pstmt.setInt(2, parquedoId);
 
@@ -1156,7 +1126,7 @@ public class Conexion {
     public void eliminarParqueoPorId(int id) {
         try {
             final String SQL = "DELETE FROM parqueo WHERE id = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setInt(1, id);
 
             pstmt.executeUpdate();
@@ -1170,7 +1140,7 @@ public class Conexion {
 
         try {
             final String SQL = "SELECT * FROM cliente WHERE documento = ? AND telefono = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setString(1, documento);
             pstmt.setString(2, telefono);
 
@@ -1201,7 +1171,7 @@ public class Conexion {
     public Usuario crearUsuario(Usuario entidad) {
         try {
             final String SQL = "INSERT INTO usuario (email, password, nombre_completo, telefono, rol_id, parqueadero_id) VALUES (?, ?, ?, ?, ?, ?)";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, entidad.getEmail());
             pstmt.setString(2, entidad.getPassword());
             pstmt.setString(3, entidad.getNombreCompleto());
@@ -1236,7 +1206,7 @@ public class Conexion {
 
         try {
             final String SQL = "SELECT * FROM usuario WHERE email = ? AND password = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setString(1, email);
             pstmt.setString(2, password);
 
@@ -1269,7 +1239,7 @@ public class Conexion {
 
         try {
             final String SQL = "SELECT * FROM usuario";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
 
             ResultSet rst = pstmt.executeQuery();
 
@@ -1304,7 +1274,7 @@ public class Conexion {
 
         try {
             final String SQL = "SELECT * FROM usuario WHERE email = ?";
-            PreparedStatement pstmt = conectarMySQL().prepareStatement(SQL);
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
             pstmt.setString(1, email);
 
             ResultSet rst = pstmt.executeQuery();
@@ -1324,5 +1294,30 @@ public class Conexion {
         }
 
         return usuario;
+    }
+    
+    public List<Cubiculo> obtenerCubiculosOcupados() {
+        List<Cubiculo> lista = new ArrayList<>();
+
+        try {
+            final String SQL = "SELECT c.id, c.nombre, p.fecha_final FROM parqueadero.cubiculo C inner join parqueo P ON C.id = P.cubiculo_id where p.fecha_final is NULL";
+            PreparedStatement pstmt = accesoBD.conectarMySQL().prepareStatement(SQL);
+
+            ResultSet rst = pstmt.executeQuery();
+
+            while (rst.next()) {
+                Cubiculo cubiculo = new Cubiculo();
+
+                cubiculo.setId(rst.getInt("id"));
+                cubiculo.setNombre(rst.getString("nombre"));
+                cubiculo.setFechaFinal(rst.getString("fecha_final"));
+
+                lista.add(cubiculo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return lista;
     }
 }

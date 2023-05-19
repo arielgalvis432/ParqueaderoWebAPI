@@ -1,6 +1,6 @@
 package co.parqueadero.api;
 
-import co.parqueadero.bd.Conexion;
+import co.parqueadero.bd.DAO;
 import co.parqueadero.modelos.Vehiculo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +25,7 @@ public class VehiculoResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String get() {
-        List<Vehiculo> lista = new Conexion().obtenerVehiculos();
+        List<Vehiculo> lista = new DAO().obtenerVehiculos();
         
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -42,7 +42,7 @@ public class VehiculoResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getClientePorId(@QueryParam("id") String id) {
-        Vehiculo entidad = new Conexion().obtenerVehiculoPorId(Integer.parseInt(id));
+        Vehiculo entidad = new DAO().obtenerVehiculoPorId(Integer.parseInt(id));
         
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -59,7 +59,7 @@ public class VehiculoResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getClientePorPlaca(@QueryParam("placa") String placa) {
-        Vehiculo entidad = new Conexion().obtenerVehiculoPorPlaca(placa);
+        Vehiculo entidad = new DAO().obtenerVehiculoPorPlaca(placa);
         
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -76,7 +76,7 @@ public class VehiculoResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getVehiculosPorClienteId(@QueryParam("clienteId") int clienteId) {
-        List<Vehiculo> entidad = new Conexion().obtenerVehiculosPorClienteId(clienteId);
+        List<Vehiculo> entidad = new DAO().obtenerVehiculosPorClienteId(clienteId);
         
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -98,7 +98,7 @@ public class VehiculoResource {
         try {
             Vehiculo entidad = mapper.readValue(clienteJson, Vehiculo.class);
             
-            entidad = new Conexion().crearVehiculo(entidad);
+            entidad = new DAO().crearVehiculo(entidad);
             
             return mapper.writeValueAsString(entidad);
         } catch (JsonProcessingException ex) {
@@ -116,7 +116,7 @@ public class VehiculoResource {
         
         try {
             Vehiculo entidad = objectMapper.readValue(json, Vehiculo.class);
-            new Conexion().actualizarVehiculo(entidad);
+            new DAO().actualizarVehiculo(entidad);
             
             return objectMapper.writeValueAsString(entidad);
         } catch (Exception ex) {

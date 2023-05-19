@@ -1,6 +1,6 @@
 package co.parqueadero.api;
 
-import co.parqueadero.bd.Conexion;
+import co.parqueadero.bd.DAO;
 import co.parqueadero.modelos.FormaPago;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +25,7 @@ public class FormaPagoResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String get() {
-        List<FormaPago> lista = new Conexion().obtenerFormasPago();
+        List<FormaPago> lista = new DAO().obtenerFormasPago();
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -48,7 +48,7 @@ public class FormaPagoResource {
         try {
             entidad = mapper.readValue(json, FormaPago.class);
 
-            entidad = new Conexion().actualizarMedioPago(entidad);
+            entidad = new DAO().actualizarMedioPago(entidad);
 
             return mapper.writeValueAsString(entidad);
         } catch (JsonProcessingException ex) {
